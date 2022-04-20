@@ -5,8 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gmail.bodziowaty6978.todoapp.feature_todo.domain.use_case.TodoUseCases
-import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.todos.util.TodoEvent
-import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.todos.util.TodoState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

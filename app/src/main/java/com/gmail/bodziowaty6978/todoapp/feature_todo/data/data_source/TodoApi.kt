@@ -16,7 +16,7 @@ interface TodoApi {
     suspend fun insertTodoItem(@Body todo: Todo): Response<Todo>
 
     @DELETE("todos/1")
-    suspend fun deleteTodoItem(@Path("id") todoItemId: Int)
+    suspend fun deleteTodoItem(@Path("id") todoItemId: Int):Response<Todo>
 
     @PUT("todos/{id}")
     suspend fun updateTodoItem(
