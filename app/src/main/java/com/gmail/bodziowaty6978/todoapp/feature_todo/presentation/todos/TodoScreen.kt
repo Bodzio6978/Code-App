@@ -12,26 +12,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.todos.components.GreetingsSection
 import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.todos.components.TodoSection
+import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.util.Screen
 import com.gmail.bodziowaty6978.todoapp.ui.theme.LightRed
 
 @Composable
 fun TodoScreen(
     viewModel: TodoViewModel = hiltViewModel(),
-//    navController: NavController
+    navController: NavController
 ) {
     val state = viewModel.state
     val scaffoldState = rememberScaffoldState()
 
-    LaunchedEffect(true){
+    LaunchedEffect(true) {
         viewModel.getTodos()
     }
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    navController.navigate(Screen.AddEditTodoScreen.route)
+                },
                 backgroundColor = LightRed
             ) {
                 Icon(

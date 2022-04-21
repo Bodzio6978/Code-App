@@ -9,19 +9,37 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.add_edit_todo.components.HintTextField
 import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.add_edit_todo.components.ToolbarSection
 import com.gmail.bodziowaty6978.todoapp.ui.theme.LightRed
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun AddEditTodoScreen(
-//    navController: NavController,
+    navController: NavController,
     viewModel: AddEditTodoViewModel = hiltViewModel()
 ) {
     val titleState = viewModel.todoState
     val scaffoldState = rememberScaffoldState()
+
+    LaunchedEffect(key1 = true){
+        viewModel.todoUiEvent.collectLatest { event ->
+            when(event){
+                is AddEditTodoUiEvent.ShowSnackbar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.message
+                    )
+                }
+                is AddEditTodoUiEvent.SaveTodo -> {
+                    navController.navigateUp()
+                }
+            }
+        }
+    }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -46,7 +64,7 @@ fun AddEditTodoScreen(
             ToolbarSection(
                 false,
                 onBackIconPressed = {
-
+                    navController.navigateUp()
                 }
             )
 
