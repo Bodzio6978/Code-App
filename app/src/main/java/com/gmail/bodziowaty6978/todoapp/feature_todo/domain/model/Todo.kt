@@ -6,3 +6,5 @@ data class Todo(
     val title: String,
     val userId: Int
 )
+
+class InvalidTodoException(message:String):Exception(message)

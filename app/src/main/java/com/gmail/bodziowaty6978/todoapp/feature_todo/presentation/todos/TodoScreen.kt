@@ -17,6 +17,8 @@ import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.todos.componen
 import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.todos.components.TodoSection
 import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.util.Screen
 import com.gmail.bodziowaty6978.todoapp.ui.theme.LightRed
+import com.gmail.bodziowaty6978.todoapp.util.toJson
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun TodoScreen(
@@ -26,8 +28,22 @@ fun TodoScreen(
     val state = viewModel.state
     val scaffoldState = rememberScaffoldState()
 
-    LaunchedEffect(true) {
+    LaunchedEffect(key1 = true){
         viewModel.getTodos()
+    }
+
+    LaunchedEffect(true) {
+        viewModel.todoUiState.collectLatest { todoEvent ->
+            when(todoEvent){
+                is TodoUiEvent.CompletedTodo -> {
+                    scaffoldState.snackbarHostState.showSnackbar("Completed todo")
+                }
+
+                is TodoUiEvent.EditTodo -> {
+                    navController.navigate(Screen.AddEditTodoScreen.route + "?todo=${todoEvent.todo.toJson()}")
+                }
+            }
+        }
     }
 
     Scaffold(
@@ -54,8 +70,8 @@ fun TodoScreen(
             GreetingsSection()
             TodoSection(
                 todoItems = state.value.todos,
-                onEvent = {
-                    viewModel.onEvent(TodoEvent.CompleteTodo(state.value.todos[it]))
+                onEvent = { todoEvent ->
+                    viewModel.onEvent(todoEvent)
                 }
             )
 

@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.gmail.bodziowaty6978.todoapp.feature_todo.domain.model.Todo
+import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.todos.TodoEvent
 import com.gmail.bodziowaty6978.todoapp.ui.theme.ButtonBlue
 import com.gmail.bodziowaty6978.todoapp.ui.theme.Grey
 import com.gmail.bodziowaty6978.todoapp.ui.theme.TextWhite
@@ -24,7 +25,7 @@ import com.gmail.bodziowaty6978.todoapp.ui.theme.TextWhite
 @Composable
 fun TodoItem(
     todo: Todo,
-    onEvent: () -> Unit,
+    onEvent: (TodoEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -41,6 +42,9 @@ fun TodoItem(
         Column(
             modifier = Modifier
                 .weight(1f)
+                .clickable {
+                    onEvent(TodoEvent.EditTodo(todo))
+                }
         ) {
             Text(
                 text = todo.title,
@@ -65,7 +69,7 @@ fun TodoItem(
                 .clip(CircleShape)
                 .background(ButtonBlue)
                 .clickable {
-                    onEvent()
+                    onEvent(TodoEvent.CompleteTodo(todo))
                 }
                 .padding(10.dp)
 

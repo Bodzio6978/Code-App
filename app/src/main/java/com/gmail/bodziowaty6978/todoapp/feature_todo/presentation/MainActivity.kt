@@ -1,13 +1,15 @@
-package com.gmail.bodziowaty6978.todoapp
+package com.gmail.bodziowaty6978.todoapp.feature_todo.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.add_edit_todo.AddEditTodoScreen
 import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.todos.TodoScreen
 import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.util.Screen
@@ -37,7 +39,16 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(
-                            route = Screen.AddEditTodoScreen.route
+                            route = Screen.AddEditTodoScreen.route + "?todo={todo}",
+                            arguments = listOf(
+                                navArgument(
+                                    name = "todo"
+                                ){
+                                    type = NavType.StringType
+                                    nullable = true
+                                    defaultValue = null
+                                }
+                            )
                         ){
                             AddEditTodoScreen(
                                 navController = navController

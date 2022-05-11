@@ -8,6 +8,8 @@ import com.gmail.bodziowaty6978.todoapp.feature_todo.domain.use_case.TodoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,9 +21,10 @@ class TodoViewModel @Inject constructor(
     private val _state = mutableStateOf<TodoState>(TodoState())
     val state: State<TodoState> = _state
 
+    private val _todoUiState = MutableSharedFlow<TodoUiEvent>()
+    val todoUiState: SharedFlow<TodoUiEvent> = _todoUiState
+
     private var job: Job? = null
-
-
 
     fun onEvent(todoEvent: TodoEvent){
         when(todoEvent){
@@ -30,6 +33,13 @@ class TodoViewModel @Inject constructor(
                     useCases.updateTodo(todoEvent.todo.copy(
                         completed = true
                     ))
+                }
+            }
+            is TodoEvent.EditTodo -> {
+                viewModelScope.launch {
+                    _todoUiState.emit(
+                        TodoUiEvent.EditTodo(todoEvent.todo)
+                    )
                 }
             }
         }

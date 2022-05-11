@@ -6,19 +6,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.gmail.bodziowaty6978.todoapp.feature_todo.domain.model.Todo
+import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.todos.TodoEvent
 
 
 @Composable
 fun TodoSection(
     todoItems: List<Todo>,
-    onEvent: (Int) -> Unit
+    onEvent: (TodoEvent) -> Unit
 ) {
     LazyColumn {
-        items(todoItems.size) {
+        items(todoItems.size) { it ->
             TodoItem(
                 todo = todoItems[it],
-                onEvent = {
-                    onEvent(it)
+                onEvent = { todoEvent ->
+                    onEvent(todoEvent)
                 },
                 modifier = if (it == todoItems.size - 1) Modifier.padding(bottom = 100.dp) else Modifier
             )
