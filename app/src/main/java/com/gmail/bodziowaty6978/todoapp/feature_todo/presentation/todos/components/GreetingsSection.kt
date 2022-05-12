@@ -17,7 +17,7 @@ import com.gmail.bodziowaty6978.todoapp.ui.theme.TextWhite
 @Composable
 fun GreetingsSection(
     userName: String = "John",
-    isDeleteVisible: Boolean = false
+    onSortClick:() -> Unit
 ) {
 
     Row(
@@ -44,18 +44,17 @@ fun GreetingsSection(
             )
         }
 
-        if (isDeleteVisible) {
-            Icon(
-                imageVector = Icons.Default.Sort,
-                contentDescription = "Delete",
-                tint = Color.White,
-                modifier = Modifier
-                    .padding(15.dp)
-                    .clickable {
+        Icon(
+            imageVector = Icons.Default.Sort,
+            contentDescription = "Sort",
+            tint = Color.White,
+            modifier = Modifier
+                .padding(15.dp)
+                .clickable {
+                    onSortClick()
+                }
+        )
 
-                    }
-            )
-        }
     }
 
 }

@@ -30,9 +30,14 @@ class TodoViewModel @Inject constructor(
         when(todoEvent){
             is TodoEvent.CompleteTodo -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    useCases.updateTodo(todoEvent.todo.copy(
+                    val result = useCases.updateTodo(todoEvent.todo.copy(
                         completed = true
                     ))
+                    if (result.isSuccessful){
+                        _todoUiState.emit(TodoUiEvent.CompletedTodo)
+                    }else{
+                        _todoUiState.emit(TodoUiEvent.Error(result.message()))
+                    }
                 }
             }
             is TodoEvent.EditTodo -> {
@@ -43,7 +48,6 @@ class TodoViewModel @Inject constructor(
                 }
             }
         }
-
     }
 
     fun getTodos(){

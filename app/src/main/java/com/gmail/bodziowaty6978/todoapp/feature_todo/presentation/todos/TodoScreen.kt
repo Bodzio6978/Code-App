@@ -2,17 +2,15 @@ package com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.todos
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.shared_components.CustomSnackbar
 import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.todos.components.GreetingsSection
 import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.todos.components.TodoSection
 import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.util.Screen
@@ -28,19 +26,22 @@ fun TodoScreen(
     val state = viewModel.state
     val scaffoldState = rememberScaffoldState()
 
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         viewModel.getTodos()
     }
 
     LaunchedEffect(true) {
         viewModel.todoUiState.collectLatest { todoEvent ->
-            when(todoEvent){
+            when (todoEvent) {
                 is TodoUiEvent.CompletedTodo -> {
                     scaffoldState.snackbarHostState.showSnackbar("Completed todo")
                 }
 
                 is TodoUiEvent.EditTodo -> {
                     navController.navigate(Screen.AddEditTodoScreen.route + "?todo=${todoEvent.todo.toJson()}")
+                }
+                is TodoUiEvent.Error -> {
+                    scaffoldState.snackbarHostState.showSnackbar(todoEvent.message)
                 }
             }
         }
@@ -60,14 +61,20 @@ fun TodoScreen(
                 )
             }
         },
-        scaffoldState = scaffoldState
+        scaffoldState = scaffoldState,
+        snackbarHost = {
+            SnackbarHost(it) { data ->
+                CustomSnackbar(data = data)
+            }
+        }
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
         ) {
+            GreetingsSection(onSortClick = {
 
-            GreetingsSection()
+            })
             TodoSection(
                 todoItems = state.value.todos,
                 onEvent = { todoEvent ->

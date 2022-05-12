@@ -3,21 +3,18 @@ package com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.add_edit_todo
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.gmail.bodziowaty6978.todoapp.feature_todo.domain.model.Todo
 import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.add_edit_todo.components.HintTextField
 import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.add_edit_todo.components.ToolbarSection
-import com.gmail.bodziowaty6978.todoapp.ui.theme.LightGrey
+import com.gmail.bodziowaty6978.todoapp.feature_todo.presentation.shared_components.CustomSnackbar
 import com.gmail.bodziowaty6978.todoapp.ui.theme.LightRed
 import com.gmail.bodziowaty6978.todoapp.util.TAG
 import kotlinx.coroutines.flow.collectLatest
@@ -60,13 +57,7 @@ fun AddEditTodoScreen(
         snackbarHost = {
             SnackbarHost(it) { data ->
                 // custom snackbar with the custom colors
-                Snackbar(
-                    backgroundColor = LightGrey,
-                    content = {
-                              Text(text = data.message,color = Color.White)
-                    },
-                    modifier = Modifier.padding(12.dp)
-                )
+                CustomSnackbar(data)
             }
         },
         floatingActionButton = {
